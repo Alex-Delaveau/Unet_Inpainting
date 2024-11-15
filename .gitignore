@@ -1,2 +1,4 @@
 env_unet/
 dataset/
+src/*/__pycache__/
+src/data/__pycache__/dataset.cpython-310.pyc
