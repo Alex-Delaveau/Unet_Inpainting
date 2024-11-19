@@ -2,8 +2,8 @@ import os
 
 class Config:
     #Dataset config
-    DATASET_BASE_PATH='dataset/used_data/'
-    IMAGES_PATH=os.path.join(DATASET_BASE_PATH, 'images')
+    DATASET_BASE_PATH='data/ffhq_resized/'
+    IMAGES_PATH=os.path.join(DATASET_BASE_PATH, 'resized')
 
     #Input config
     INPUT_SIZE=(256, 256)

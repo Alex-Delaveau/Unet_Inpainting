@@ -20,7 +20,7 @@ class InpaintingDataset(tf.keras.utils.Sequence):
 
     def __getitem__(self, idx):
         batch_indexes = self.indexes[idx * self.batch_size:(idx + 1) * self.batch_size]
-        images, images_with_holes = self.__data_generation(batch_indexes)
+        images_with_holes, images = self.__data_generation(batch_indexes)
         augmented_images = []
         augmented_images_with_holes = []
         for image, image_with_holes in zip(images, images_with_holes):
@@ -44,11 +44,12 @@ class InpaintingDataset(tf.keras.utils.Sequence):
             image_with_holes = self.add_fixed_hole(image)
             images.append(image)
             images_with_holes.append(image_with_holes)
-        return images, images_with_holes
+        return images_with_holes, images
     
     
     def load_image(self, path):
         img = cv2.imread(path, cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, self.img_size)
         img = img / 255.0  # Normalize to [0, 1]
         return img

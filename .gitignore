@@ -1,3 +1,5 @@
 env_unet/
 dataset/
+data/ffhq_resized/resized/
 src/*/__pycache__/
+unet-venv/
