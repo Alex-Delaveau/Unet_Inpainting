@@ -67,6 +67,22 @@ class InpaintingDataset(tf.keras.utils.Sequence):
         image_with_hole[y_start:y_start+mh, x_start:x_start+mw] = 0
         
         return image_with_hole
+    
+    def add_random_noise_hole(self, image):
+
+        image_with_hole = image.copy()
+        # Add a hole in the center of the image of size 92 92 with random noise from 0 to 255
+        h, w, _ = image_with_hole.shape
+        mh, mw = self.mask_size
+        x_start = (w - mw) // 2
+        y_start = (h - mh) // 2
+
+        # Create a hole in the mask
+        mask = np.ones_like(image_with_hole)
+        mask[y_start:y_start+mh, x_start:x_start+mw, :] = np.random.randint(0, 256)
+
+        image_with_holes = image_with_hole * mask
+        return image_with_holes
 
 def split_dataset(image_dir, train_ratio=Config.TRAIN_RATIO, val_ratio=Config.VALID_RATIO, test_ratio=Config.TEST_RATIO, batch_size=Config.BATCH_SIZE, img_size=Config.INPUT_SIZE, mask_size=Config.MASK_SIZE, shuffle=True):
     image_paths = sorted([os.path.join(image_dir, f) for f in os.listdir(image_dir)])

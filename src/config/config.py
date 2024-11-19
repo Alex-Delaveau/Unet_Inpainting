@@ -1,7 +1,5 @@
 import os
 
-from cycler import V
-
 class Config:
     #Dataset config
     DATASET_BASE_PATH='dataset/used_data/'
