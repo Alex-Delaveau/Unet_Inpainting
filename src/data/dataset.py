@@ -3,9 +3,10 @@ import numpy as np
 import tensorflow as tf
 import cv2
 from data.augment import DataTransformer
+from config.config import Config
 
 class InpaintingDataset(tf.keras.utils.Sequence):
-    def __init__(self, image_paths, batch_size, img_size=(256, 256), mask_size=(96, 96), shuffle=True):
+    def __init__(self, image_paths, batch_size, img_size=Config.INPUT_SIZE, mask_size=Config.MASK_SIZE, shuffle=True):
         self.image_paths = image_paths
         self.batch_size = batch_size
         self.img_size = img_size
@@ -62,12 +63,12 @@ class InpaintingDataset(tf.keras.utils.Sequence):
         x_start = (w - mw) // 2
         y_start = (h - mh) // 2
         
-        # Apply the fixed mask (e.g., fill with black or another constant value)
+        # Apply the fixed mask
         image_with_hole[y_start:y_start+mh, x_start:x_start+mw] = 0
         
         return image_with_hole
 
-def split_dataset(image_dir, train_ratio=0.7, val_ratio=0.2, test_ratio=0.1, batch_size=32, img_size=(256, 256), mask_size=(96, 96), shuffle=True):
+def split_dataset(image_dir, train_ratio=Config.TRAIN_RATIO, val_ratio=Config.VALID_RATIO, test_ratio=Config.TEST_RATIO, batch_size=Config.BATCH_SIZE, img_size=Config.INPUT_SIZE, mask_size=Config.MASK_SIZE, shuffle=True):
     image_paths = sorted([os.path.join(image_dir, f) for f in os.listdir(image_dir)])
     np.random.shuffle(image_paths)
     
